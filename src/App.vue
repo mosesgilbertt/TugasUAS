@@ -1,8 +1,8 @@
 <template>
   <div id="app">
     <div id="nav">
-      <router-link to="/">Data Global</router-link> |
-      <router-link to="/about">Data Negara</router-link>
+      <router-link to="/">Global Case</router-link> |
+      <router-link to="/about">Countries</router-link>
     </div>
     <router-view/>
   </div>

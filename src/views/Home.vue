@@ -1,17 +1,17 @@
 <template>
   <div class="home">
-  <div  v-for="item in list" class="flex space-x-4">
-      <div class="flex-1 bg-blue-200 border-4">
+  <div class="flex space-x-4 p-3">
+      <div class="flex-1 bg-yellow-400 border-4 p-3 rounded-l-lg">
       Total Confirmed <br>
-      {{item.TotalConfirmed}}
+      {{global.TotalConfirmed}}
       </div>
-      <div class="flex-1 ...">
+      <div class="flex-1 bg-yellow-200 border-4 p-3">
       Total Deaths <br>
-      {{item.TotalDeaths}}
+      {{global.TotalDeaths}}
       </div>
-      <div class="flex-1 ...">
+      <div class="flex-1 bg-yellow-400 border-4 p-3 rounded-r-lg">
       Total Recovered <br>
-      {{item.TotalRecovered}}
+      {{global.TotalRecovered}}
       </div>
     </div>
   </div>
@@ -19,18 +19,30 @@
 </template>
 
 <script>
-// @ is an alias to /src
 export default {
-  name: 'App',
-  data() {
-    return {list:['Global']}
+   name: 'Home',
+  data () {
+    return {
+      id: null,
+      global: {},
+      countries:[]
+    }
   },
-  mounted()
+  mounted ()
   {
-    axios.get('https://api.covid19api.com/summary').then((resp) => {
-      this.list=resp.data;
-      console.warn(resp.data)
-      })
+    const axios = require('axios');
+    axios.get('https://api.covid19api.com/summary')
+    .then(resp =>{
+      if(resp && resp.status && resp.status == 200)
+      {
+        this.id = resp && resp.data && resp.data.ID;
+        this.global = resp && resp.data && resp.data.Global;
+        this.countries = resp && resp.data && resp.data.Countries;
       }
+    })
+    .catch(err => {
+      console.log(err)
+    });
+  }
 }
 </script>

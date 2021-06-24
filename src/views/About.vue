@@ -1,31 +1,31 @@
 <template>
   <div class="about">
-    <table>
-      <tr>
-        <td>
+    <table class="table m-auto bg-gray-200 border-2 border-white">
+      <tr class="bg-blue-200 text-white">
+        <td class="p-3">
           Country
         </td>
-        <td>
+        <td class="p-3">
           Confirmed
         </td>
-        <td>
+        <td class="p-3">
           Deaths
         </td>
-        <td>
+        <td class="p-3">
           Recovered
         </td>
       </tr>
-      <tr v-for="isi in lst" v-bind:key="isi.id">
-        <td>
+      <tr v-for="isi in countries" v-bind:key="isi.countries">
+        <td class="border-2 border-white">
             {{isi.Country}}
           </td>
-          <td>
+          <td class="border-2 border-white">
             {{isi.TotalConfirmed}}
           </td>
-          <td>
+          <td class="border-2 border-white">
             {{isi.TotalDeaths}}
           </td>
-          <td>
+          <td class="border-2 border-white">
             {{isi.TotalRecovered}}
           </td>
       </tr>
@@ -37,15 +37,28 @@
 // @ is an alias to /src
 export default {
   name: 'About',
-  data() {
-    return {lst:['Countries']}
+  data () {
+    return {
+      id: null,
+      global: {},
+      countries:[]
+    }
   },
-  mounted()
+  mounted ()
   {
-    axios.get('https://api.covid19api.com/summary').then((resp) => {
-      this.list=resp.data;
-      console.warn(resp.data)
-      })
+    const axios = require('axios');
+    axios.get('https://api.covid19api.com/summary')
+    .then(resp =>{
+      if(resp && resp.status && resp.status == 200)
+      {
+        this.id = resp && resp.data && resp.data.ID;
+        this.global = resp && resp.data && resp.data.Global;
+        this.countries = resp && resp.data && resp.data.Countries;
       }
+    })
+    .catch(err => {
+      console.log(err)
+    });
+  }
 }
 </script>
